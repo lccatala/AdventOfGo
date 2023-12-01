@@ -20,7 +20,6 @@ func solveDay01() {
 	sum := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		fmt.Println(line)
 		i := 0
 		j := len(line) - 1
 		var charI rune
