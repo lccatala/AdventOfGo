@@ -24,7 +24,7 @@ func SolveDay02() {
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanLines)
 
-	total := 0
+	totalPower := 0
 	for scanner.Scan() {
 		line := scanner.Text()
 		if len(line) == 0 {
@@ -32,24 +32,31 @@ func SolveDay02() {
 		}
 		gameNameAndData := strings.Split(line, ":")
 
-		gameID, _ := strconv.Atoi(strings.Split(gameNameAndData[0], " ")[1])
+		var minColorCounts = map[string]int{
+			"red":   0,
+			"green": 0,
+			"blue":  0,
+		}
+		power := 0
 
 		games := strings.Split(gameNameAndData[1], ";")
-		possible := true
 		for _, game := range games {
+			fmt.Println(game)
 			colorComponents := strings.Split(game, ",")
 			for _, component := range colorComponents {
 				countAndColor := strings.Split(component, " ")
 				count, _ := strconv.Atoi(countAndColor[1])
-				if count > maxColorCounts[countAndColor[2]] {
-					possible = false
-					break
+				if count > minColorCounts[countAndColor[2]] {
+					if countAndColor[2] == "red" {
+						fmt.Printf("%d > %d\n", count, minColorCounts[countAndColor[2]])
+					}
+					minColorCounts[countAndColor[2]] = count
 				}
 			}
 		}
-		if possible {
-			total += gameID
-		}
+		fmt.Println(minColorCounts)
+		power = minColorCounts["red"] * minColorCounts["green"] * minColorCounts["blue"]
+		totalPower += power
 	}
-	fmt.Println(total)
+	fmt.Println(totalPower)
 }
